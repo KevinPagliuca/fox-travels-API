@@ -12,6 +12,7 @@ import { UserService } from './modules/user/user.service';
     GQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
+      playground: true,
       formatError: (error: IGQLError) => {
         return {
           message: error.message || error.extensions?.response?.message,
