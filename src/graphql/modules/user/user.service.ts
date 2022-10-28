@@ -4,7 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import { PrismaService } from '../../../database/prisma/prisma.service';
-import { CreateUserDTO, LoginUserDTO } from '../../dtos/user.dto';
+import { CreateUserInput, UserAuthInput } from '../../inputs/user.input';
 
 @Injectable()
 export class UserService {
@@ -46,12 +46,12 @@ export class UserService {
   }
 
   async getUserById(id: string) {
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: { id },
     });
   }
 
-  async createUser({ email, name, password, confirmPassword }: CreateUserDTO) {
+  async createUser({ email, name, password, confirmPassword }: CreateUserInput) {
     if (password.toLowerCase() !== confirmPassword.toLowerCase()) {
       throw new BadRequestException('The passwords must be the same!');
     }
@@ -82,7 +82,7 @@ export class UserService {
     };
   }
 
-  async loginUser({ email, password }: LoginUserDTO) {
+  async userAuth({ email, password }: UserAuthInput) {
     const { user, token } = await this.validateCredentials(email, password);
 
     return {

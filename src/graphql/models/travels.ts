@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { User } from './user';
+import { Location } from './location';
 
 @ObjectType('Travel')
 export class Travel {
@@ -11,22 +11,22 @@ export class Travel {
   title: string;
 
   @Field()
-  startDate: Date;
+  minPrice: number;
 
   @Field()
-  endDate: Date;
+  maxPrice?: number;
 
   @Field()
-  price: number;
+  pricePerMiles: number;
 
   @Field()
   discount?: number;
 
-  @Field(() => User)
-  user: User;
+  @Field()
+  locationId: string;
 
-  // @Field()
-  // purchases: Purchases[];
+  @Field(() => Location)
+  location: Location;
 
   @Field()
   createdAt: Date;

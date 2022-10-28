@@ -3,22 +3,22 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { AuthorizationGuard } from '../../guards/authorization.guard';
 import { CurrentUser } from '../../guards/current-user';
-import { CreateUserInput, LoginUserInput } from '../../inputs/user.input';
+import { CreateUserInput, UserAuthInput as UserAuthInput } from '../../inputs/user.input';
 import { User, UserWithToken } from '../../models/user';
 import { UserService } from './user.service';
 
-@Resolver('User')
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => [User])
-  async getAll() {
-    return this.userService.getAllUsers();
+  async getAllUsers() {
+    return await this.userService.getAllUsers();
   }
 
   @Query(() => User)
-  async getById(id: string) {
-    return this.userService.getUserById(id);
+  async getUserById(@Args('id') id: string) {
+    return await this.userService.getUserById(id);
   }
 
   @Mutation(() => UserWithToken)
@@ -27,8 +27,8 @@ export class UserResolver {
   }
 
   @Mutation(() => UserWithToken)
-  async loginUser(@Args('data') data: LoginUserInput) {
-    return await this.userService.loginUser(data);
+  async userAuth(@Args('data') data: UserAuthInput) {
+    return await this.userService.userAuth(data);
   }
 
   @Query(() => UserWithToken)

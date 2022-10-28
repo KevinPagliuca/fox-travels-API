@@ -1,7 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { Travel } from './travels';
-
 @ObjectType('User')
 export class User {
   @Field(() => ID)
@@ -13,9 +11,8 @@ export class User {
   @Field()
   email: string;
 
-  @Field(() => [Travel])
-  travels: Travel[];
-  // purchases Purchases[]
+  @Field()
+  isAdmin?: boolean;
 
   @Field()
   createdAt: Date;

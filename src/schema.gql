@@ -5,11 +5,12 @@
 type Travel {
   id: ID!
   title: String!
-  startDate: DateTime!
-  endDate: DateTime!
-  price: Float!
+  minPrice: Float!
+  maxPrice: Float!
+  pricePerMiles: Float!
   discount: Float!
-  user: User!
+  locationId: String!
+  location: Location!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -19,11 +20,30 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Location {
+  id: ID!
+  placeName: String!
+  country: String!
+  city: String!
+  type: LocationTypeEnum!
+  latitude: Float!
+  longitude: Float!
+  travels: [Travel!]!
+}
+
+"""
+Available Locations types enum
+"""
+enum LocationTypeEnum {
+  AIRPORT
+  PLACE
+}
+
 type User {
   id: ID!
   name: String!
   email: String!
-  travels: [Travel!]!
+  isAdmin: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -34,14 +54,24 @@ type CreateUser {
 }
 
 type Query {
-  getAll: [User!]!
-  getById: User!
+  getAllUsers: [User!]!
+  getUserById(id: String!): User!
   me: CreateUser!
+  getAllTravels: [Travel!]!
+  getTravelById(id: String!): Travel!
+  getAllLocations: [Location!]!
+  getLocationById(id: String!): Location!
 }
 
 type Mutation {
   createUser(data: CreateUserInput!): CreateUser!
-  loginUser(data: LoginUserInput!): CreateUser!
+  userAuth(data: UserAuthInput!): CreateUser!
+  createTravel(data: CreateTravelInput!): Travel!
+  updateTravel(data: UpdateTravelInput!): Travel!
+  deleteTravel(id: String!): Travel!
+  createLocation(data: CreateLocationInput!): Location!
+  updateLocation(data: UpdateLocationInput!): Location!
+  deleteLocation(id: String!): Location!
 }
 
 input CreateUserInput {
@@ -51,7 +81,46 @@ input CreateUserInput {
   confirmPassword: String!
 }
 
-input LoginUserInput {
+input UserAuthInput {
   email: String!
   password: String!
+}
+
+input CreateTravelInput {
+  title: String!
+  minPrice: Float!
+  maxPrice: Float!
+  pricePerMiles: Float!
+  easyVisa: Boolean!
+  locationId: String!
+}
+
+input UpdateTravelInput {
+  id: String!
+  title: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  price: Float!
+  discount: Float!
+  userId: String!
+  locationId: String!
+}
+
+input CreateLocationInput {
+  country: String!
+  city: String!
+  placeName: String!
+  type: LocationTypeEnum!
+  latitude: Float!
+  longitude: Float!
+}
+
+input UpdateLocationInput {
+  id: String!
+  country: String!
+  city: String!
+  placeName: String!
+  type: LocationTypeEnum!
+  latitude: Float!
+  longitude: Float!
 }

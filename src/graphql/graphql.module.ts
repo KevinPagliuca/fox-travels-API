@@ -4,6 +4,10 @@ import { GraphQLModule as GQLModule } from '@nestjs/graphql';
 
 import { PrismaService } from '../database/prisma/prisma.service';
 import { IGQLError } from './interfaces/GQLError.interface';
+import { LocationsResolver } from './modules/locations/locations.resolver';
+import { LocationsService } from './modules/locations/locations.service';
+import { TravelsResolver } from './modules/travels/travels.resolver';
+import { TravelsService } from './modules/travels/travels.service';
 import { UserResolver } from './modules/user/user.resolver';
 import { UserService } from './modules/user/user.service';
 
@@ -22,6 +26,17 @@ import { UserService } from './modules/user/user.service';
       },
     }),
   ],
-  providers: [UserResolver, UserService, PrismaService],
+  providers: [
+    // Resolvers
+    UserResolver,
+    TravelsResolver,
+    LocationsResolver,
+
+    // Services
+    PrismaService,
+    LocationsService,
+    TravelsService,
+    UserService,
+  ],
 })
 export class GraphQLModule {}

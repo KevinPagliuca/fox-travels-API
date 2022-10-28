@@ -16,48 +16,69 @@ model User {
   name     String
   password String
 
-  travels   Travel[]
-  purchases Purchases[]
+  isAdmin Boolean? @default(false)
+
+  travels UserTravel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Travel {
-  id        String   @id @default(cuid())
-  title     String
-  startDate DateTime
-  endDate   DateTime
-  price     Float
-  discount  Float?   @default(0)
+  id    String @id @default(cuid())
+  title String
 
-  location   Location    @relation(fields: [locationId], references: [id])
+  discount      Float?   @default(0)
+  minPrice      Float
+  maxPrice      Float?
+  pricePerMiles Float
+  easyVisa      Boolean? @default(false)
+
+  location   Location @relation(fields: [locationId], references: [id])
   locationId String
-  user       User?       @relation(fields: [userId], references: [id])
-  userId     String?
-  purchases  Purchases[]
+
+  userTravels UserTravel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model Purchases {
-  id    Int      @id @default(autoincrement())
-  name  String
-  price Float
-  date  DateTime
-
-  user     User?   @relation(fields: [userId], references: [id])
-  userId   String?
-  travel   Travel  @relation(fields: [travelId], references: [id])
-  travelId String
+enum LocationType {
+  AIRPORT
+  PLACE
 }
 
 model Location {
   id String @id @default(cuid())
 
-  country String
-  city    String
+  country   String
+  city      String
+  placeName String
+  type      LocationType
 
-  Travel Travel[]
+  latitude  Float
+  longitude Float
+
+  travels     Travel[]
+  userOrigins UserTravel[]
+}
+
+model UserTravel {
+  id    Int   @id @default(autoincrement())
+  price Float
+
+  goingDate DateTime
+  backDate  DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  travel   Travel @relation(fields: [travelId], references: [id])
+  travelId String
+
+  origin   Location @relation(fields: [originId], references: [id])
+  originId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

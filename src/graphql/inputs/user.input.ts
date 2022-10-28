@@ -16,7 +16,7 @@ export class CreateUserInput {
 }
 
 @InputType()
-export class LoginUserInput {
+export class UserAuthInput {
   @Field()
   email: string;
 
