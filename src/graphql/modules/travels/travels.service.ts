@@ -17,8 +17,21 @@ export class TravelsService {
     });
   }
 
+  async getTravelsByLocationId(locationId: string) {
+    return await this.prisma.travel.findMany({
+      where: { locationId },
+    });
+  }
+
   async createTravel(data: CreateTravelInput) {
-    if (!location) throw new BadRequestException('Location not found');
+    const location = await this.prisma.location.findUnique({
+      where: { id: data.locationId },
+    });
+
+    if (!location)
+      throw new BadRequestException(
+        'Location not found, try another location id or create a location to create a new travel',
+      );
 
     return await this.prisma.travel.create({
       data,

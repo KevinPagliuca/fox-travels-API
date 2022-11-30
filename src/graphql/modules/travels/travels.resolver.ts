@@ -1,6 +1,7 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { CreateTravelInput, UpdateTravelInput } from '../../inputs/travels.input';
+import { Location } from '../../models/location';
 import { Travel } from '../../models/travels';
 import { LocationsService } from '../locations/locations.service';
 import { TravelsService } from './travels.service';
@@ -34,7 +35,7 @@ export class TravelsResolver {
     return await this.travelsService.deleteTravel(id);
   }
 
-  @ResolveField()
+  @ResolveField(() => Location)
   async location(@Parent() travel: Travel) {
     return await this.locationsService.getLocationById(travel.locationId);
   }

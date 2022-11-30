@@ -17,7 +17,9 @@ import { UserService } from './modules/user/user.service';
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
       playground: true,
-      cors: process.env.NODE_ENV === 'production' ? 'https://fox-travels.vercel.app' : false,
+      cors: {
+        origin: process.env.NODE_ENV === 'production' ? 'https://fox-travels.vercel.app' : '*',
+      },
       formatError: (error: IGQLError) => {
         return {
           message: error.message || error.extensions?.response?.message,

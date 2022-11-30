@@ -18,7 +18,8 @@ model User {
 
   isAdmin Boolean? @default(false)
 
-  travels UserTravel[]
+  travels   UserTravel[]
+  locations Location[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -61,6 +62,9 @@ model Location {
 
   travels     Travel[]
   userOrigins UserTravel[]
+
+  createdBy       User?   @relation(fields: [createdByUserId], references: [id])
+  createdByUserId String?
 }
 
 model UserTravel {

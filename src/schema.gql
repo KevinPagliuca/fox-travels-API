@@ -61,6 +61,7 @@ type Query {
   getTravelById(id: String!): Travel!
   getAllLocations: [Location!]!
   getLocationById(id: String!): Location!
+  getMyLocations: [Location!]!
 }
 
 type Mutation {
@@ -71,7 +72,7 @@ type Mutation {
   deleteTravel(id: String!): Travel!
   createLocation(data: CreateLocationInput!): Location!
   updateLocation(data: UpdateLocationInput!): Location!
-  deleteLocation(id: String!): Location!
+  deleteLocation(id: String!): String!
 }
 
 input CreateUserInput {

@@ -15,6 +15,7 @@
     "no-console": "warn",
     "no-empty-function": "off",
     "lines-between-class-members": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "prettier/prettier": [
       "warn",
       {
