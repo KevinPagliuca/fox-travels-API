@@ -28,7 +28,7 @@ export class LocationsService {
       where: { country: data.country, city: data.city },
     });
 
-    if (isLocationAlreadyExists) throw new BadRequestException('Location already exists');
+    if (isLocationAlreadyExists) throw new BadRequestException('The location already exists on our database');
 
     return await this.prisma.location.create({
       data: {
@@ -39,7 +39,7 @@ export class LocationsService {
   }
 
   async updateLocation(data: UpdateLocationInput, userId: string) {
-    if (userId) throw new BadRequestException('You must provide userId to updating a location');
+    if (!userId) throw new BadRequestException('You must provide userId to updating a location');
 
     const isUserAuthorizedToUpdateLocation = await this.prisma.location.findFirst({
       where: { id: data.id, createdByUserId: userId },
